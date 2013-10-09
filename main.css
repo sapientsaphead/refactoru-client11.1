@@ -1,0 +1,9 @@
+* {
+	box-sizing: border-box;
+	text-align:center;
+	font-family: sans-serif;
+	background-color: skyblue;
+}
+button {
+	background-color: silver;
+}
