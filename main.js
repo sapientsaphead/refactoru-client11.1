@@ -148,5 +148,13 @@ $(document).ready(function(){
 	console.log("My Favorite Drink is :", margaritaDrink.toString() + '\n' + margaritaDrink.items.toString());
 	console.log("Restaurant: ", myRestaurant.toString());
 
+	var renderMenuBox = function(){
+		var menuBox = $('<div class=menuBox></div>');
+		$('.content').append(menuBox);
+	};
+
+	var render
+
+	renderMenuBox();
 	
 }); //end of document
