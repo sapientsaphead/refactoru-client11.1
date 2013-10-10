@@ -16,15 +16,25 @@ $(document).ready(function(){
 		};
 	};
 
+	//rework this calling the object key name instead of using text.
+	// also would be awesome to create format text function to capitalize and lowercaps as needed and add line breaks, etc.
+
+
 	FoodItem.prototype.toString = function() {
 		var dietaryRestrictions = this.foodFeatures();
-		var foodItem = (this.name.charAt(0).toUpperCase() + this.name.slice(1) + ' has ' + this.calories + ' calories. ' + dietaryRestrictions.join('. ') + '.\n');
+		var foodItem = (this.name.charAt(0).toUpperCase() + this.name.slice(1) + ' has ' + this.calories + ' calories. ' + dietaryRestrictions.join('. ') + '.');
 		return foodItem;
 	};
 
-	var chocolateCake = new FoodItem('Death by Chocolate Cake', 650, false, true, true);
+	
 
-	chocolateCake.toString();
+	var chocolateCake = new FoodItem('Death by Chocolate Cake', 650, false, true, true);
+	
+	// for (key in chocolateCake){
+	// 	console.log(key, chocolateCake[key])
+	// }
+	console.log("Food Item", chocolateCake.toString());
+
 
 	// Part II
 
@@ -32,7 +42,8 @@ $(document).ready(function(){
 	// & indicate desired type of each property.
 
 
-	// name = string, description = string, items = array of objects, price = number, plates = no clue, dietaryPreference = string
+	// name = string, description = string, items = array of objects, price = number, 
+	// plates = array of objects, dietaryPreference = string or array of boolean values
 
 	var Drink = function(name, description, items){
 		this.name = name;
@@ -76,8 +87,14 @@ $(document).ready(function(){
 	var triplesec = new FoodItem('triple sec', 78, true, true, true);
 
 	var margaritaDrink = new Drink('Margarita', 'Made with freshly squeezed limes. ', [limejuice, tequila, triplesec]);
+	var burritoPlate = new Plate('Burrito', 'Filled with stuff. Good stuff.', 15.00, [tortilla, barbacoa, rice, beans, cheese]);
+	var guacamolePlate = new Plate('Guacamole', 'Mashed at your table with fresh locally sourced ingredients.', 8.00, [avocado, tomato, onion, limejuice]);
 
-	margaritaDrink.items.toString();
+	var myMenu = new Menu([margaritaDrink, burritoPlate, guacamolePlate]);
+
+	var myRestaurant = new Restaurant('Mi Comidita', 'The restaurant where you eat what I want to eat.', myMenu.plates);
+
+	// margaritaDrink.items.toString();
 
 	Drink.prototype.toString = function() {
 		var menuItem = (this.name.charAt(0).toUpperCase() + this.name.slice(1) + ' - ' 
@@ -85,11 +102,51 @@ $(document).ready(function(){
 		return menuItem;
 	};
 
-	// var describeMenuItem = function(item){
+	Plate.prototype.toString = function() {
+		var menuItem = (this.name.charAt(0).toUpperCase() + this.name.slice(1) + ' - ' 
+						+ this.description + ' $' + this.price);
+		return menuItem;
+	};
 
-	// }
-	// margaritaDrink.toString(); 
-	// margaritaDrink.items.toString();
+	Plate.prototype.isVegan = function(){
+		for (var i=0; i<this.items.length; i++){
+			if (this.items[i].vegan === false){
+				return 'Not Vegan'; 
+			}
+		}
+		return 'Vegan.';
+	};
+
+	// console.log("is burrito vegan?",burrito.isVegan());
+
+	Plate.prototype.isGlutenFree = function(){
+		for (var i=0; i<this.items.length; i++){
+			if (this.items[i].glutenFree === false){
+				return 'Contains gluten.'; 
+			}
+		}
+		return 'Gluten Free.';
+	};
+
+	Plate.prototype.isCitrusFree = function(){
+		for (var i=0; i<this.items.length; i++){
+			if (this.items[i].citrusFree === false){
+				return 'Contains citrus.'; 
+			}
+		}
+		return 'Citrus free.';
+	};
+
+
+	Restaurant.prototype.toString = function() {
+		var myRestaurant = (this.name.charAt(0).toUpperCase() + this.name.slice(1) + ' - ' 
+						+ this.description + this.items);
+		return myRestaurant;
+	};
+	
+
 	console.log("My Favorite Drink is :", margaritaDrink.toString() + '\n' + margaritaDrink.items.toString());
+	console.log("Restaurant: ", myRestaurant.toString());
 
+	
 }); //end of document
