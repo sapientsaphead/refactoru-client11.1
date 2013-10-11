@@ -225,18 +225,19 @@ $(document).ready(function(){
 		}
 	}
 
-	var renderAllMenuItems = function(array1, array2){
-		var allMenuItems = [];
-		var allMenuItemsPrice = [];
-		for (var i=0; i<array1.length; i++){
-			allMenuItems.push(array1[i]);
-		}
-		for (var i=0; i<array2.length; i++){
-			allMenuItems.push(array2[i]);
+	// var renderAllMenuItems = function(array1, array2){
+	// 	var allMenuItems = [];
+	// 	var allMenuItemsPrice = [];
+	// 	for (var i=0; i<array1.length; i++){
+	// 		allMenuItems.push(array1[i]);
+	// 	}
+	// 	for (var i=0; i<array2.length; i++){
+	// 		allMenuItems.push(array2[i]);
 
-		} 
-		return allMenuItems;
-	};
+	// 	} 
+	// 	return allMenuItems;
+	// };
+
 
 
 	// on menu item click adds to order
@@ -244,7 +245,10 @@ $(document).ready(function(){
 	// submit order button opens thank you for your order lightbox?
 
 	var renderOrder = function(){
-		$('.menu').on('click', '<li>')
+		$('.menu').on('click','li', function(){
+			$(this).attr('class');
+			if $(this).parent()
+		})
 	}
 
 
