@@ -25,6 +25,22 @@ if (!String.prototype.supplant) {
     };
 }
 
+/** Performs string interpolation. */
+if (!String.prototype.supplant2) {
+    String.prototype.supplant2 = function (o) {
+        return this.replace(
+            /\{([^{}]*)\}/g,
+            function (a, b) {
+                var r = o,
+                    parts = b.split(".");
+                for (var i=0; r && i<parts.length; i++)
+                    r = r[parts[i]];
+                return typeof r === 'string' || typeof r === 'number' ? r : a;
+            }
+        );
+    };
+}
+
 //Remove Falsey Values
 function removeFalseyImpure (arr) {
     //create empty array to store truthy values to return

@@ -33,7 +33,7 @@ $(document).ready(function(){
 	// for (key in chocolateCake){
 	// 	console.log(key, chocolateCake[key])
 	// }
-	console.log("Food Item", chocolateCake.toString());
+	// console.log("Food Item", chocolateCake.toString());
 
 
 	// Part II
@@ -45,16 +45,22 @@ $(document).ready(function(){
 	// name = string, description = string, items = array of objects, price = number, 
 	// plates = array of objects, dietaryPreference = string or array of boolean values
 
-	var Drink = function(name, description, items){
+	var allDrinks = [];
+	var allPlates = [];
+
+	var Drink = function(name, description, price, items){
 		this.name = name;
-		this.description = description; 
-		this.items = items; 
+		this.description = description;
+		this.price = price;
+		this.items = items;
+		allDrinks.push(this);
 	};
 	var Plate = function(name, description, price, items){
 		this.name = name;
 		this.description = description; 
 		this.price = price; 
 		this.items = items; 
+		allPlates.push(this);
 	};
 	var Order = function(plates){
 		this.plates = plates; 
@@ -72,7 +78,8 @@ $(document).ready(function(){
 	};
 
 	// . Instantiate
-	//var FoodItem = function (name, calories, vegan, glutenFree, citrusFree)
+	
+	// Food Items:
 
 	var tortilla = new FoodItem('tortilla', 60, true, false, true);
 	var barbacoa = new FoodItem('barbacoa', 167, false, true, true);
@@ -85,39 +92,27 @@ $(document).ready(function(){
 	var onion = new FoodItem('onion', 25, true, true, true);
 	var tequila = new FoodItem('tequila', 81, true, true, true);
 	var triplesec = new FoodItem('triple sec', 78, true, true, true);
+	var tamarind = new FoodItem('tamarind', 56, true, true, true);
+	var grilledveggies = new FoodItem('grilled veggies', 78, true, true, true);
 
-	var margaritaDrink = new Drink('Margarita', 'Made with freshly squeezed limes. ', [limejuice, tequila, triplesec]);
-	var burritoPlate = new Plate('Burrito', 'Filled with stuff. Good stuff.', 15.00, [tortilla, barbacoa, rice, beans, cheese]);
+
+	// Drinks: 
+	var margaritaDrink = new Drink('Margarita', 'Made with freshly squeezed limes. ', 7.00, [limejuice, tequila, triplesec]);
+	var tamarindMargaritaDrink = new Drink('Tamarind Margarita', 'Marg with a tamarind twist. ', 9.00, [tamarind, tequila, triplesec]);
+	
+	// Plates:
+	var burritoPlate = new Plate('Barbacoa Burrito', 'Filled with stuff. Good stuff.', 15.00, [tortilla, barbacoa, rice, beans, cheese]);
+	var veggieBurritoPlate = new Plate('Veggie Burrito', 'Filled with stuff. Good veggie stuff.', 15.00, [tortilla, grilledveggies, rice, beans, cheese]);
 	var guacamolePlate = new Plate('Guacamole', 'Mashed at your table with fresh locally sourced ingredients.', 8.00, [avocado, tomato, onion, limejuice]);
 
+	// Menu:
 	var myMenu = new Menu([margaritaDrink, burritoPlate, guacamolePlate]);
 
+	// Restaurant:
 	var myRestaurant = new Restaurant('Mi Comidita', 'The restaurant where you eat what I want to eat.', myMenu.plates);
 
-	// margaritaDrink.items.toString();
 
-	Drink.prototype.toString = function() {
-		var menuItem = (this.name.charAt(0).toUpperCase() + this.name.slice(1) + ' - ' 
-						+ this.description);
-		return menuItem;
-	};
-
-	Plate.prototype.toString = function() {
-		var menuItem = (this.name.charAt(0).toUpperCase() + this.name.slice(1) + ' - ' 
-						+ this.description + ' $' + this.price);
-		return menuItem;
-	};
-
-	Plate.prototype.isVegan = function(){
-		for (var i=0; i<this.items.length; i++){
-			if (this.items[i].vegan === false){
-				return 'Not Vegan'; 
-			}
-		}
-		return 'Vegan.';
-	};
-
-	// console.log("is burrito vegan?",burrito.isVegan());
+	// Dietary preferences tests:
 
 	Plate.prototype.isGlutenFree = function(){
 		for (var i=0; i<this.items.length; i++){
@@ -137,24 +132,159 @@ $(document).ready(function(){
 		return 'Citrus free.';
 	};
 
+	Plate.prototype.isVegan = function(){
+		for (var i=0; i<this.items.length; i++){
+			if (this.items[i].vegan === false){
+				return 'Not Vegan'; 
+			}
+		}
+		return 'Vegan.';
+	};
+
+	Drink.prototype.isCitrusFree = function(){
+		for (var i=0; i<this.items.length; i++){
+			if (this.items[i].citrusFree === false){
+				return 'Contains citrus.'; 
+			}
+		}
+		return 'Citrus free.';
+	};
 
 	Restaurant.prototype.toString = function() {
 		var myRestaurant = (this.name.charAt(0).toUpperCase() + this.name.slice(1) + ' - ' 
 						+ this.description + this.items);
 		return myRestaurant;
 	};
-	
 
-	console.log("My Favorite Drink is :", margaritaDrink.toString() + '\n' + margaritaDrink.items.toString());
-	console.log("Restaurant: ", myRestaurant.toString());
+
+	// Calorie counters:
+	Drink.prototype.calorieCount = function(){
+		var totalCalories = 0;
+		for(var i=0; i<this.items.length; i++){
+			totalCalories += this.items[i].calories;
+		}
+		return totalCalories;
+	};
+	Plate.prototype.calorieCount = function(){
+		var totalCalories = 0;
+		for(var i=0; i<this.items.length; i++){
+			totalCalories += this.items[i].calories;
+		}
+		return totalCalories;
+	};
+
+
+	// toString for Drinks + Plates:
+	Drink.prototype.toString = function() {
+		var menuItem = (this.name.charAt(0).toUpperCase() + this.name.slice(1) + ' - ' 
+						+ this.description + ' $' + this.price + '<br><div class=description>' + this.calorieCount() + ' calories. ' + this.isCitrusFree() + '</div>');
+		return menuItem;
+	};
+
+	Plate.prototype.toString = function() {
+		var menuItem = (this.name.charAt(0).toUpperCase() + this.name.slice(1) + ' - ' 
+						+ this.description + ' $' + this.price + '<br><div class=description>' + this.calorieCount() + ' calories. ' + this.isVegan() + this.isGlutenFree() + this.isCitrusFree() + '</div>');
+		return menuItem;
+	};
 
 	var renderMenuBox = function(){
 		var menuBox = $('<div class=menuBox></div>');
 		$('.content').append(menuBox);
 	};
 
-	var render
+	var renderDrinkMenu = function(){
+		var drinkMenu = $('<div class=drinkMenu></div>');
+		$('.menuBox').append(drinkMenu);
+		var drinkHeader = $('<h2 class=drinks>Drinks</h2>');
+		$('.drinkMenu').append(drinkHeader);
+		var drinkList = $('<ul></ul>');
+		$('.drinkMenu').append(drinkList);
+
+	};
+
+	var renderPlateMenu = function(){
+		var plateMenu = $('<div class=plateMenu></div>');
+		$('.menuBox').append(plateMenu);
+		var plateHeader = $('<h2 class=plates>Plates</h2>');
+		$('.plateMenu').append(plateHeader);
+		var plateList = $('<ul></ul>');
+		$('.plateMenu').append(plateList);
+	};
+
+	var renderAllDrinks = function(array){
+		for (var i=0; i<array.length; i++){
+			var listItem = $('<li>' + array[i].toString() + '</li>');
+			$('.drinkMenu').append(listItem);
+		}
+	}
+
+	var renderAllPlates = function(array){
+		for (var i=0; i<array.length; i++){
+			var listItem = $('<li>' + array[i].toString() + '</li>');
+			$('.plateMenu').append(listItem);
+		}
+	}
+
+	var renderAllMenuItems = function(array1, array2){
+		var allMenuItems = [];
+		var allMenuItemsPrice = [];
+		for (var i=0; i<array1.length; i++){
+			allMenuItems.push(array1[i]);
+		}
+		for (var i=0; i<array2.length; i++){
+			allMenuItems.push(array2[i]);
+
+		} 
+		return allMenuItems;
+	};
+
+
+
+	var renderShoppingList = function(arr) {
+
+
+		var allMenuItems = renderAllMenuItems(allDrinks,allPlates);
+		var names = [];
+		var prices = [];
+
+		for(var i=0; i<arr.length; i++){
+			names.push(arr[i].name);
+		}
+		for(var i=0; i<arr.length; i++){
+			prices.push(arr[i].price);
+		}
+
+		console.log("names", names);
+		console.log("")
+
+		//create orderForm but have two columns, one for name and one for price
+		//use map function so you ensure that your arrays are same order + size
+		//include total box that updates
+
+		var orderForm = $('<h2>Please select your order items: </h2><form>' +
+			'<input type="checkbox" name="{0}" value="{0}"> {0}<br>'.supplant(names) +
+			'<input type="checkbox" name="{1}" value="{1}"> {1}<br>'.supplant(names) +
+			'<input type="checkbox" name="{2}" value="{2}"> {2}<br>'.supplant(names) +
+			'<input type="checkbox" name="{3}" value="{3}"> {3}<br>'.supplant(names) +
+			'<input type="checkbox" name="{4}" value="{4}"> {4}'.supplant(names)+ 
+			'</form>');
+
+		$('.shoppingCart').append(orderForm);
+	}
+
+	$('.order-online-btn').on('click', function(){
+		var menuItems = renderAllMenuItems(allDrinks, allPlates);
+		$('.shoppingCart').addClass('active');
+		$('.content').addClass('hide');
+		
+		renderShoppingList(menuItems);
+	});
 
 	renderMenuBox();
+	renderDrinkMenu();
+	renderPlateMenu();
+	renderAllDrinks(allDrinks);
+	renderAllPlates(allPlates);
+	
 	
 }); //end of document
