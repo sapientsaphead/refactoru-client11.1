@@ -189,7 +189,7 @@ $(document).ready(function(){
 
 	var renderMenuBox = function(){
 		var menuBox = $('<div class=menuBox></div>');
-		$('.content').append(menuBox);
+		$('.menu').append(menuBox);
 	};
 
 	var renderDrinkMenu = function(){
@@ -213,14 +213,14 @@ $(document).ready(function(){
 
 	var renderAllDrinks = function(array){
 		for (var i=0; i<array.length; i++){
-			var listItem = $('<li>' + array[i].toString() + '</li>');
+			var listItem = $('<li class="' + i + '">' + array[i].toString() + '</li>');
 			$('.drinkMenu').append(listItem);
 		}
 	}
 
 	var renderAllPlates = function(array){
 		for (var i=0; i<array.length; i++){
-			var listItem = $('<li>' + array[i].toString() + '</li>');
+			var listItem = $('<li class="' + i + '">' + array[i].toString() + '</li>');
 			$('.plateMenu').append(listItem);
 		}
 	}
@@ -239,52 +239,67 @@ $(document).ready(function(){
 	};
 
 
+	// on menu item click adds to order
+	// has index but depending on box it's in refers to drink or plate
+	// submit order button opens thank you for your order lightbox?
 
-	var renderShoppingList = function(arr) {
-
-
-		var allMenuItems = renderAllMenuItems(allDrinks,allPlates);
-		var names = [];
-		var prices = [];
-
-		for(var i=0; i<arr.length; i++){
-			names.push(arr[i].name);
-		}
-		for(var i=0; i<arr.length; i++){
-			prices.push(arr[i].price);
-		}
-
-		console.log("names", names);
-		console.log("")
-
-		//create orderForm but have two columns, one for name and one for price
-		//use map function so you ensure that your arrays are same order + size
-		//include total box that updates
-
-		var orderForm = $('<h2>Please select your order items: </h2><form>' +
-			'<input type="checkbox" name="{0}" value="{0}"> {0}<br>'.supplant(names) +
-			'<input type="checkbox" name="{1}" value="{1}"> {1}<br>'.supplant(names) +
-			'<input type="checkbox" name="{2}" value="{2}"> {2}<br>'.supplant(names) +
-			'<input type="checkbox" name="{3}" value="{3}"> {3}<br>'.supplant(names) +
-			'<input type="checkbox" name="{4}" value="{4}"> {4}'.supplant(names)+ 
-			'</form>');
-
-		$('.shoppingCart').append(orderForm);
+	var renderOrder = function(){
+		$('.menu').on('click', '<li>')
 	}
 
-	$('.order-online-btn').on('click', function(){
-		var menuItems = renderAllMenuItems(allDrinks, allPlates);
-		$('.shoppingCart').addClass('active');
-		$('.content').addClass('hide');
-		
-		renderShoppingList(menuItems);
-	});
 
 	renderMenuBox();
 	renderDrinkMenu();
 	renderPlateMenu();
 	renderAllDrinks(allDrinks);
 	renderAllPlates(allPlates);
+
+
+	// var renderShoppingList = function(arr) {
+	// 	// var allMenuItems = renderAllMenuItems(allDrinks,allPlates);
+	// 	var names = [];
+	// 	var prices = [];
+
+	// 	names = arr.map(function(){
+	// 		output = [];
+	// 		for(var i=0; i<arr.length; i++){
+	// 			output.push(arr[i].name);
+	// 		};
+	// 		return output;
+	// 	});
+
+	// 	prices = arr.map(function(){
+	// 		for(var i=0; i<arr.length; i++){
+	// 			prices.push(arr[i].price);
+	// 		}
+	// 	});
+
+	// 	console.log("names", names);
+	// 	console.log("prices", price);
+	// 	//use map function so you ensure that your arrays are same order + size
+	// 	//first run immediately supplant names but then use a more individual append to include prices both as strings and as value
+	// 	//include total box that updates dynamically with click
+
+	// 	var orderForm = $('<h2>Please select your order items: </h2><form>' +
+	// 		'<input type="checkbox" name="{0}" value="tbd"> {0}<br>'.supplant(names) +
+	// 		'<input type="checkbox" name="{1}" value="tbd"> {1}<br>'.supplant(names) +
+	// 		'<input type="checkbox" name="{2}" value="tbd"> {2}<br>'.supplant(names) +
+	// 		'<input type="checkbox" name="{3}" value="tbd"> {3}<br>'.supplant(names) +
+	// 		'<input type="checkbox" name="{4}" value="tbd"> {4}'.supplant(names)+ 
+	// 		'</form>');
+
+	// 	$('.shoppingCart').append(orderForm);
+	// };
+
+	// $('.order-online-btn').on('click', function(){
+	// 	var menuItems = renderAllMenuItems(allDrinks, allPlates);
+	// 	$('.shoppingCart').addClass('active');
+	// 	$('.content').addClass('hide');
+		
+	// 	renderShoppingList(menuItems);
+	// });
+
+	
 	
 	
 }); //end of document
