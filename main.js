@@ -110,6 +110,7 @@ $(document).ready(function(){
 		this.name = name;
 		this.description = description; 
 		this.items = items;
+		this.order = [];
 	};
 	var Customer = function(dietaryPreference){
 		this.dietaryPreference = dietaryPreference;
@@ -189,7 +190,7 @@ $(document).ready(function(){
 		$('.menuBox').append(drinkMenu);
 		var drinkHeader = $('<h2 class=drinks>Drinks</h2>');
 		$('.drinkMenu').append(drinkHeader);
-		var drinkList = $('<ul></ul>');
+		var drinkList = $('<ul class="margs"></ul>');
 		$('.drinkMenu').append(drinkList);
 
 	};
@@ -199,35 +200,75 @@ $(document).ready(function(){
 		$('.menuBox').append(plateMenu);
 		var plateHeader = $('<h2 class=plates>Plates</h2>');
 		$('.plateMenu').append(plateHeader);
-		var plateList = $('<ul></ul>');
+		var plateList = $('<ul class="dishes"></ul>');
 		$('.plateMenu').append(plateList);
 	};
 
 	var renderAllDrinks = function(array){
 		for (var i=0; i<array.length; i++){
-			var listItem = $('<li class="' + i + '">' + array[i].toString() + '</li>');
-			$('.drinkMenu').append(listItem);
+			var listItem = $('<li  class="triggerOrder" data-itemdrink="' + i + '" data-quantity="0">' + array[i].toString() + '</li>');
+			$('.margs').append(listItem);
 		}
 	}
 
 	var renderAllPlates = function(array){
 		for (var i=0; i<array.length; i++){
-			var listItem = $('<li class="' + i + '">' + array[i].toString() + '</li>');
-			$('.plateMenu').append(listItem);
+			var listItem = $('<li  class="triggerOrder" data-itemfood="' + i + '" data-quantity="0">' + array[i].toString() + '</li>');
+			$('.dishes').append(listItem);
 		}
 	}
+	var renderOrder = function(){
+		var array = [];
+		$('.content').on('click','.menu', function(){
+			var orderItems = renderShoppingCart(myRestaurant.order);
+			$('.content').on('click','li', function(){
+				$('.shoppingCart').val(orderItems);
+			});
+		});
+	}
+	var renderShoppingCart = function(array) {
+		$('.shoppingCart').val("");
+		for (var i=0; i < array.length; i++) {
+			var list = $('<ul></ul>');
+			$('.shoppingCart').append(list);
+			var orderItem = $('<li><span class="left">' + array[i].name + '</span><span class="right"> $' 
+				+ array[i].price + '</span></li>');
+			$('.shoppingCart').append(orderItem);
+		}
+		renderOrder();
+	}
+
+	// FUNCTIONS
 
 
-	// on menu item click adds to order
-	// has index but depending on box it's in refers to drink or plate
-	// submit order button opens thank you for your order lightbox?
+	
+	// EVENT HANDLERS
 
-	// var renderOrder = function(){
-	// 	$('.menu').on('click','li', function(){
-	// 		// $(this).attr('class');
-	// 		console.log($(this));
-	// 	}
-	// }
+	$('.content').on('click','.triggerOrder', function(){
+			
+			$('.shoppingCart').removeClass('hide');
+			itemDrink = $(this).attr("data-itemdrink");
+			itemFood = $(this).attr("data-itemfood");
+			if (itemDrink !== undefined) {
+				myRestaurant.order.push(allDrinks[itemDrink]);
+			}
+			if (itemFood !== undefined) {
+				myRestaurant.order.push(allPlates[itemFood]);
+			}
+			renderShoppingCart(myRestaurant.order);
+	});
+
+	
+
+	
+
+	var renderTotal = function(array) {
+		var orderTotal = 0;
+		for (var i=0; i < array.length; i++) {
+			orderTotal += Number(array.price);
+		}
+	}
+	
 
 	renderRestaurantName();
 	renderMenuBox();
@@ -235,9 +276,5 @@ $(document).ready(function(){
 	renderPlateMenu();
 	renderAllDrinks(allDrinks);
 	renderAllPlates(allPlates);
-
-	// renderOrder();
-	
-	
 	
 }); //end of document

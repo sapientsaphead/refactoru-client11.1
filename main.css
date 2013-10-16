@@ -5,7 +5,7 @@
 }
 body {
 	background-color: skyblue;
-	background-repeat: url('/citrus-seamless-pattern.gif');
+	background-image: url('citrus.gif');
 	background-repeat: repeat;
 }
 button {
@@ -13,6 +13,22 @@ button {
 }
 h1 {
 	text-shadow: 1px 1px 1px chartreuse;
+}
+.content {
+	width: 100%;
+}
+.menu {
+	float:left;
+	width: 65%;
+}
+.shoppingCart {
+	width: 25%;
+	float: left;
+	background-color: white;
+	color: black;
+	border: 1px solid black;
+	padding: 10px;
+	margin: 20px;
 }
 .drinkMenu, .plateMenu{
 	background-color: white;
@@ -30,13 +46,6 @@ h1 {
 	font-size: 14px;
 	color:#999;
 }
-.shoppingCart {
-	background-color: white;
-	color: black;
-	border: 1px solid black;
-	padding: 10px;
-	margin: 20px;
-}
 
 form {
 	position: fixed;
@@ -50,9 +59,15 @@ form {
 	background-color: white;
 	border: 1px solid black;
 }
-.active {
-	display: block;
-}
 .hide {
 	display:none;
+}
+ul {
+	list-style-image: url('plus.jpeg');
+}
+ul
+
+li:hover {
+	list-style-image: url('orangeplus.jpeg');
+	cursor: hand;
 }
