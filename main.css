@@ -5,9 +5,14 @@
 }
 body {
 	background-color: skyblue;
+	background-repeat: url('/citrus-seamless-pattern.gif');
+	background-repeat: repeat;
 }
 button {
 	background-color: silver;
+}
+h1 {
+	text-shadow: 1px 1px 1px chartreuse;
 }
 .drinkMenu, .plateMenu{
 	background-color: white;
@@ -17,8 +22,13 @@ button {
 	margin: 20px;
 }
 .description {
-	font-size: 12px;
-	color: silver;
+	font-size: 20px;
+	color: chartreuse;
+	text-shadow: 1px 1px 1px black;
+}
+.information {
+	font-size: 14px;
+	color:#999;
 }
 .shoppingCart {
 	background-color: white;
