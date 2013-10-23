@@ -5,7 +5,7 @@
 }
 body {
 	background-color: skyblue;
-	background-image: url('citrus.gif');
+	background-image: url('images/citrus.gif');
 	background-repeat: repeat;
 }
 button {
@@ -59,15 +59,15 @@ form {
 	background-color: white;
 	border: 1px solid black;
 }
-.hide {
-	display:none;
-}
 ul {
-	list-style-image: url('plus.jpeg');
+	list-style-image: url('images/plus.jpeg');
 }
 ul
 
 li:hover {
-	list-style-image: url('orangeplus.jpeg');
+	list-style-image: url('images/orangeplus.jpeg');
 	cursor: hand;
+}
+.totalPrice {
+	border: 1px solid black;
 }

@@ -217,64 +217,77 @@ $(document).ready(function(){
 			$('.dishes').append(listItem);
 		}
 	}
-	var renderOrder = function(){
-		var array = [];
-		$('.content').on('click','.menu', function(){
-			var orderItems = renderShoppingCart(myRestaurant.order);
-			$('.content').on('click','li', function(){
-				$('.shoppingCart').val(orderItems);
-			});
-		});
-	}
+
 	var renderShoppingCart = function(array) {
-		$('.shoppingCart').val("");
+		$('.shoppingCart').empty();
+		var list = $('<ul></ul>');
+		$('.shoppingCart').append(list);
+		// loop through array and for each item in array create list item
 		for (var i=0; i < array.length; i++) {
-			var list = $('<ul></ul>');
-			$('.shoppingCart').append(list);
 			var orderItem = $('<li><span class="left">' + array[i].name + '</span><span class="right"> $' 
 				+ array[i].price + '</span></li>');
 			$('.shoppingCart').append(orderItem);
 		}
-		renderOrder();
+		var totalPrice = ('<div class="totalPrice">Total Order Price:  $'+ renderTotal(myRestaurant.order) + '</div>');
+		$('.shoppingCart').append(totalPrice);
 	}
-
-	// FUNCTIONS
-
-
-	
-	// EVENT HANDLERS
-
-	$('.content').on('click','.triggerOrder', function(){
-			
-			$('.shoppingCart').removeClass('hide');
-			itemDrink = $(this).attr("data-itemdrink");
-			itemFood = $(this).attr("data-itemfood");
-			if (itemDrink !== undefined) {
-				myRestaurant.order.push(allDrinks[itemDrink]);
-			}
-			if (itemFood !== undefined) {
-				myRestaurant.order.push(allPlates[itemFood]);
-			}
-			renderShoppingCart(myRestaurant.order);
-	});
-
-	
-
-	
 
 	var renderTotal = function(array) {
 		var orderTotal = 0;
 		for (var i=0; i < array.length; i++) {
-			orderTotal += Number(array.price);
+			orderTotal += parseInt(array[i].price);
 		}
+		return orderTotal
+	}
+	// FUNCTIONS
+
+	var runRestaurant = function(){
+		renderRestaurantName();
+		renderMenuBox();
+		renderDrinkMenu();
+		renderPlateMenu();
+		renderAllDrinks(allDrinks);
+		renderAllPlates(allPlates);
 	}
 	
+	// EVENT HANDLERS
 
-	renderRestaurantName();
-	renderMenuBox();
-	renderDrinkMenu();
-	renderPlateMenu();
-	renderAllDrinks(allDrinks);
-	renderAllPlates(allPlates);
+	// Hide & Show Cart
+
+	$('.shoppingCart').hide();
+
+	$(document).on('click', '.show-cart-btn', function(){
+		$('.shoppingCart').show();
+		var hideButton = ("<input type='button' class='hide-cart-btn btn btn-success' value='Hide Cart'>")
+		$('.buttons').append(hideButton);
+		$('.buttons').find('.show-cart-btn').remove();
+
+		
+	})
+
+	$(document).on('click', '.hide-cart-btn', function(){
+		$('.shoppingCart').hide();
+		var showButton = ("<input type='button' class='show-cart-btn btn btn-success' value='Show Cart'>")
+		$('.buttons').append(showButton);
+		$('.buttons').find('.hide-cart-btn').remove();
+	})
+
+	// Add items to order
+	$(document).on('click','.triggerOrder', function(){
+		itemDrink = $(this).attr("data-itemdrink");
+		itemFood = $(this).attr("data-itemfood");
+		if (itemDrink !== undefined) {
+			myRestaurant.order.push(allDrinks[itemDrink]);
+		}
+		if (itemFood !== undefined) {
+			myRestaurant.order.push(allPlates[itemFood]);
+		}
+		renderShoppingCart(myRestaurant.order);
+	});
+
 	
+	
+	// CALLBACK
+	runRestaurant();
+
 }); //end of document
