@@ -12,7 +12,12 @@
   	<h1></h1>
 
     <div class='buttons'>
-        <input type='button' class='submit-order-btn btn btn-success' value='Submit Order'>
+        <button class="dietary-preference" id="vegan">Vegan</button>
+        <button class="dietary-preference" id="gf">Gluten Free</button>
+        <button class="dietary-preference" id="cf">Citrus Free</button>
+    </div>
+
+    <div class="show-hide-cart">
         <input type='button' class='show-cart-btn btn btn-success' value='Show Cart'>
     </div>
 
@@ -20,6 +25,18 @@
         <div class="menu">
         </div>
         <div class="shoppingCart">
+            <h3>Shopping Cart</h3>
+            <table>
+               <thead>
+                   <tr>
+                       <th>Name</th>
+                       <th>Quantity</th>
+                       <th>Price</th>
+                   </tr>
+               </thead>
+               <tbody>
+               </tbody>
+            </table>
         </div>
 	</div>
 

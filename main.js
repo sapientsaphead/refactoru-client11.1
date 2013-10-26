@@ -29,27 +29,36 @@ $(document).ready(function(){
 		this.isGlutenFree = function(){
 			for (var i=0; i<this.items.length; i++){
 				if (this.items[i].glutenFree === false){
-					return 'Contains gluten.'; 
+					return false; 
 				}
 			}
-			return 'Gluten Free.';
+			return true;
 		};
+		this.isGlutenFreeStr = function(){
+			return this.isGlutenFree() ? 'Gluten Free. ' : 'Contains Gluten. ';
+		}
 		this.isVegan = function(){
 			for (var i=0; i<this.items.length; i++){
 				if (this.items[i].vegan === false){
-					return 'Not Vegan'; 
+					return false; 
 				}
 			}
-			return 'Vegan.';
+			return true;
 		};
+		this.isVeganStr = function(){
+			return this.isVegan() ? 'Vegan. ' : 'Not Vegan. ';
+		}
 		this.isCitrusFree = function(){
 			for (var i=0; i<this.items.length; i++){
 				if (this.items[i].citrusFree === false){
-					return 'Contains citrus.'; 
+					return false; 
 				}
 			}
-			return ' Citrus free.'
+			return true;
 		};
+		this.isCitrusFreeStr = function(){
+			return this.isCitrusFree() ? 'Citrus Free. ' : 'Contains Citrus. ';
+		}
 		this.calories = function(){
 			var totalCalories = 0;
 			for(var i=0; i<this.items.length; i++){
@@ -70,27 +79,44 @@ $(document).ready(function(){
 		this.isGlutenFree = function(){
 			for (var i=0; i<this.items.length; i++){
 				if (this.items[i].glutenFree === false){
-					return 'Contains gluten.'; 
+					return false; 
 				}
 			}
-			return 'Gluten Free.';
+			return true;
 		};
+		this.isGlutenFreeStr = function(){
+			return this.isGlutenFree() ? 'Gluten Free. ' : 'Contains Gluten. ';
+		}
 		this.isVegan = function(){
 			for (var i=0; i<this.items.length; i++){
 				if (this.items[i].vegan === false){
-					return 'Not Vegan'; 
+					return false; 
 				}
 			}
-			return 'Vegan.';
+			return true;
 		};
+		this.isVeganStr = function(){
+			return this.isVegan() ? 'Vegan. ' : 'Not Vegan. ';
+		}
 		this.isCitrusFree = function(){
 			for (var i=0; i<this.items.length; i++){
 				if (this.items[i].citrusFree === false){
-					return 'Contains citrus.'; 
+					return false; 
 				}
 			}
-			return ' Citrus free.'
+			return true;
 		};
+		this.isCitrusFreeStr = function(){
+			return this.isCitrusFree() ? 'Citrus Free. ' : 'Contains Citrus. ';
+		}
+		this.calories = function(){
+			var totalCalories = 0;
+			for(var i=0; i<this.items.length; i++){
+				totalCalories += this.items[i].calories;
+			}
+			return totalCalories;
+		};
+
 		this.calories = function(){
 			var totalCalories = 0;
 			for(var i=0; i<this.items.length; i++){
@@ -145,7 +171,7 @@ $(document).ready(function(){
 	var guacamolePlate = new Plate('Guacamole', 'Mashed at your table with fresh locally sourced ingredients.', 8.00, [avocado, tomato, onion, limejuice]);
 
 	/// Menu:
-	var myMenu = new Menu([margaritaDrink, burritoPlate, guacamolePlate]);
+	var myMenu = new Menu([margaritaDrink, tamarindMargaritaDrink, burritoPlate, veggieBurritoPlate, guacamolePlate]);
 
 	/// Restaurant:
 	var myRestaurant = new Restaurant('Mi Comidita', 'The restaurant where you eat what I want to eat.', myMenu.plates);
@@ -162,14 +188,14 @@ $(document).ready(function(){
 	Drink.prototype.toString = function() {
 		var menuItem = (this.name.charAt(0).toUpperCase() + this.name.slice(1) + ' - ' 
 						+ this.description + ' $' + this.price + '<br><div class=information>' + this.calories() 
-						+ ' calories. ' + this.isCitrusFree() + '</div>');
+						+ ' calories. ' + this.isCitrusFreeStr() + '</div>');
 		return menuItem;
 	};
 
 	Plate.prototype.toString = function() {
 		var menuItem = (this.name.charAt(0).toUpperCase() + this.name.slice(1) + ' - ' 
 						+ this.description + ' $' + this.price + '<br><div class=information>' + this.calories() 
-						+ ' calories. ' + this.isVegan() + this.isGlutenFree() + this.isCitrusFree() + '</div>');
+						+ ' calories. ' + this.isVeganStr() + this.isGlutenFreeStr() + this.isCitrusFreeStr() + '</div>');
 		return menuItem;
 	};
 
@@ -207,6 +233,10 @@ $(document).ready(function(){
 	var renderAllDrinks = function(array){
 		for (var i=0; i<array.length; i++){
 			var listItem = $('<li  class="triggerOrder" data-itemdrink="' + i + '" data-quantity="0">' + array[i].toString() + '</li>');
+			listItem.attr('data-vegan', array[i].isVegan());
+			listItem.attr('data-gf', array[i].isGlutenFree());
+			listItem.attr('data-cf', array[i].isCitrusFree());
+
 			$('.margs').append(listItem);
 		}
 	}
@@ -214,31 +244,77 @@ $(document).ready(function(){
 	var renderAllPlates = function(array){
 		for (var i=0; i<array.length; i++){
 			var listItem = $('<li  class="triggerOrder" data-itemfood="' + i + '" data-quantity="0">' + array[i].toString() + '</li>');
+			listItem.attr('data-vegan', array[i].isVegan());
+			listItem.attr('data-gf', array[i].isGlutenFree());
+			listItem.attr('data-cf', array[i].isCitrusFree());
 			$('.dishes').append(listItem);
 		}
 	}
 
-	var renderShoppingCart = function(array) {
-		$('.shoppingCart').empty();
-		var list = $('<ul></ul>');
-		$('.shoppingCart').append(list);
-		// loop through array and for each item in array create list item
-		for (var i=0; i < array.length; i++) {
-			var orderItem = $('<li><span class="left">' + array[i].name + '</span><span class="right"> $' 
-				+ array[i].price + '</span></li>');
-			$('.shoppingCart').append(orderItem);
+
+	var updateQuantity = function(name, quantity){
+		for (var i=0; i < myRestaurant.order.length; i++){
+			if (myRestaurant.order[i].name === name) {
+				if (quantity == 0) {
+					myRestaurant.order.splice(i, 1);
+				}
+				else {
+					myRestaurant.order[i].quantity = quantity;
+				}
+				break;
+			}
 		}
-		var totalPrice = ('<div class="totalPrice">Total Order Price:  $'+ renderTotal(myRestaurant.order) + '</div>');
-		$('.shoppingCart').append(totalPrice);
+		renderShoppingCart(myRestaurant.order);
+	}
+	var itemHTML = '<tr data-name="{name}"><td class="tname">{name}</td><td class="tquantity"><input type=number value="{quantity}"><td class="tprice">${total}</td></tr>'
+
+	var renderShoppingCart = function(array) {
+
+		var tbody = $('.shoppingCart tbody');
+		tbody.empty();
+		// loop through array and for each item in array create list item
+		if (array.length === 0){
+			tbody.append('<tr><td colspan=3>No order items yet.</td></tr>');
+			return;
+		}
+		for (var i=0; i < array.length; i++) {
+			array[i].total = array[i].price * array[i].quantity;
+			var orderItem = itemHTML.supplant(array[i]);
+			tbody.append(orderItem);
+		}
+		var totalPrice = ('<tr class="totalprice"><td colspan=2>Total Order Price</td><td class="tprice">  $'+ renderTotal(myRestaurant.order) + '</td></tr>');
+		tbody.append(totalPrice);
+
+		// updates quantity if it is changed in the shopping cart
+		tbody.find('input').change(function(){
+			var name = $(this).closest('tr').attr('data-name');
+			var quantity = Math.max(0,$(this).val());
+			updateQuantity(name, quantity);
+		})
 	}
 
 	var renderTotal = function(array) {
 		var orderTotal = 0;
 		for (var i=0; i < array.length; i++) {
-			orderTotal += parseInt(array[i].price);
+			orderTotal += parseInt(array[i].price)*parseInt(array[i].quantity);
 		}
 		return orderTotal
 	}
+
+
+	var renderDietaryPreference = function(){
+		$('.triggerOrder.highlight').removeClass('highlight');
+		var str = '';
+		$('.dietary-preference').each(function(){
+			if ($(this).hasClass('active')){
+				str += '[data-' + $(this).attr('id') + '=true]';
+			}
+		});
+		if (str.length > 0){
+			$('.triggerOrder' + str).addClass('highlight');
+		}
+	}
+
 	// FUNCTIONS
 
 	var runRestaurant = function(){
@@ -250,6 +326,17 @@ $(document).ready(function(){
 		renderAllPlates(allPlates);
 	}
 	
+	var addSingleItem = function(item){
+		for (var i=0; i < myRestaurant.order.length; i++){
+			if (myRestaurant.order[i].name === item.name) {
+				myRestaurant.order[i].quantity++;
+				return;
+			}
+		}
+		var cartItem = {name: item.name, price: item.price, quantity: 1};
+		myRestaurant.order.push(cartItem);
+	}
+
 	// EVENT HANDLERS
 
 	// Hide & Show Cart
@@ -257,33 +344,45 @@ $(document).ready(function(){
 	$('.shoppingCart').hide();
 
 	$(document).on('click', '.show-cart-btn', function(){
-		$('.shoppingCart').show();
-		var hideButton = ("<input type='button' class='hide-cart-btn btn btn-success' value='Hide Cart'>")
+		var hideButton = $("<input type='button' class='hide-cart-btn btn btn-success' value='Hide Cart'>");
 		$('.buttons').append(hideButton);
 		$('.buttons').find('.show-cart-btn').remove();
-
-		
-	})
+		renderShoppingCart(myRestaurant.order);
+		$('.shoppingCart').show();
+	});
 
 	$(document).on('click', '.hide-cart-btn', function(){
 		$('.shoppingCart').hide();
-		var showButton = ("<input type='button' class='show-cart-btn btn btn-success' value='Show Cart'>")
+		var showButton = $("<input type='button' class='show-cart-btn btn btn-success' value='Show Cart'>");
 		$('.buttons').append(showButton);
 		$('.buttons').find('.hide-cart-btn').remove();
-	})
+	});
+
 
 	// Add items to order
 	$(document).on('click','.triggerOrder', function(){
 		itemDrink = $(this).attr("data-itemdrink");
 		itemFood = $(this).attr("data-itemfood");
 		if (itemDrink !== undefined) {
-			myRestaurant.order.push(allDrinks[itemDrink]);
+			addSingleItem(allDrinks[itemDrink]);
 		}
-		if (itemFood !== undefined) {
-			myRestaurant.order.push(allPlates[itemFood]);
+		else if (itemFood !== undefined) {
+			addSingleItem(allPlates[itemFood]);
 		}
-		renderShoppingCart(myRestaurant.order);
+		if ($('.shoppingCart').is(':hidden')){
+			$('.show-cart-btn').trigger('click');
+		}
+		else renderShoppingCart(myRestaurant.order);
 	});
+
+	// Highlight items by dietary preference
+	$(document).on('click', '.dietary-preference', function(){
+		if ($(this).hasClass('active'))
+			$(this).removeClass('active');
+		else
+			$(this).addClass('active');
+		renderDietaryPreference();
+	})
 
 	
 	
