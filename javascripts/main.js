@@ -345,8 +345,8 @@ $(document).ready(function(){
 
 	$(document).on('click', '.show-cart-btn', function(){
 		var hideButton = $("<input type='button' class='hide-cart-btn btn btn-success' value='Hide Cart'>");
-		$('.buttons').append(hideButton);
-		$('.buttons').find('.show-cart-btn').remove();
+		$('.show-hide-cart').append(hideButton);
+		$('.show-hide-cart').find('.show-cart-btn').remove();
 		renderShoppingCart(myRestaurant.order);
 		$('.shoppingCart').show();
 	});
@@ -354,8 +354,8 @@ $(document).ready(function(){
 	$(document).on('click', '.hide-cart-btn', function(){
 		$('.shoppingCart').hide();
 		var showButton = $("<input type='button' class='show-cart-btn btn btn-success' value='Show Cart'>");
-		$('.buttons').append(showButton);
-		$('.buttons').find('.hide-cart-btn').remove();
+		$('.show-hide-cart').append(showButton);
+		$('.show-hide-cart').find('.hide-cart-btn').remove();
 	});
 
 
